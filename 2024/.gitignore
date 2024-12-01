@@ -1,0 +1,32 @@
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# IDE-specific files (assuming you're using IntelliJ IDEA)
+.idea/
+out/
+
+# Maven build artifacts
+target/
+
+# Maven temporary and backup files
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# Git directory for the main project
+!main/.git
+
+# Empty directories
+!main/day[1-9][0-9]/*  # Ignore empty directories for days 1-99
+!main/day[1-9][0-9][0-9]/*  # Ignore empty directories for days 100-999
+
+# IDE
+.vscode/
