@@ -1,20 +1,24 @@
 package com.crazyvinvin.aoc2024;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
-/**
- * Unit test for simple App.
- */
 public class AppTest 
 {
-    /**
-     * Rigorous Test :-)
-     */
     @Test
     public void shouldAnswerWithTrue()
     {
-        assertTrue( true );
+        Input input = new Input();
+        input.leftRow.add(1);
+        input.leftRow.add(2);
+        input.leftRow.add(3);
+        input.rightRow.add(3);
+        input.rightRow.add(4);
+        input.rightRow.add(6);
+
+        int answer = new InputProcessor(input).processInput();
+
+        assertSame(answer, 7);
     }
 }

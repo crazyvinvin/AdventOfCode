@@ -5,10 +5,10 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
-        InputReader inputReader = new InputReader();
+        InputReader inputReader = new InputReader("day1/");
         Input input = inputReader.getInput();
 
-
+        InputProcessor inputProcessor = new InputProcessor(input);
+        inputProcessor.processInput();
     }
 }

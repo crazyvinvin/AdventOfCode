@@ -5,8 +5,18 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class InputReader {
+    private static String fileName = "inputText.txt";
+
+    private String pathToInputFile;
+
+    public InputReader(String pathToInputFile) {
+        this.pathToInputFile = pathToInputFile;
+    }
+
     private Scanner getScannerOfInputFile() {
-        File inputFile = new File("inputText.txt");
+        String pathName = pathToInputFile + fileName;
+        File inputFile = new File(pathName);
+        System.out.println("InputReader is reading from: " + inputFile.getPath());
 
         Scanner scanner;
         try {
@@ -24,7 +34,7 @@ public class InputReader {
         Input input = new Input();
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            String[] valuesOnLine = line.split(" ");
+            String[] valuesOnLine = line.split("   ");
             input.leftRow.add(Integer.parseInt(valuesOnLine[0].trim()));
             input.rightRow.add(Integer.parseInt(valuesOnLine[1].trim()));
         }
