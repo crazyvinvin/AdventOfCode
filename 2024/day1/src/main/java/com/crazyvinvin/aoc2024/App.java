@@ -8,7 +8,11 @@ public class App
         InputReader inputReader = new InputReader("day1/");
         Input input = inputReader.getInput();
 
-        InputProcessor inputProcessor = new InputProcessor(input);
+        IInputProcessor inputProcessor;
+
+        // inputProcessor = new InputProcessorPartOne(input);
+        inputProcessor = new InputProcessorPartTwo(input);
+        
         inputProcessor.processInput();
     }
 }
