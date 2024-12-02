@@ -1,5 +1,5 @@
 package.path = package.path .. ";day2/src/?.lua"
 
-local module1 = require("module1")
+local reader = require("Reader")
 
-module1.hello()
+local reports = reader.readInput();
