@@ -19,6 +19,7 @@ func main() {
 	calculations := findMuls(memSlice)
 	answers := performCalcs(calculations)
 
+	fmt.Println()
 	fmt.Print("Total: ", sum(answers))
 }
 
@@ -39,12 +40,29 @@ func performCalcs(calculations [][]int) []int {
 }
 
 func findMuls(memSlice []string) [][]int {
-	mulStart := [4]string{"m", "u", "l", "("}
+	mulStart := []string{"m", "u", "l", "("}
 	muls := [][]int{}
+	mulInstructionsEnabled := true
 	for i := 0; i < len(memSlice)-8; i++ {
 		partialMem, largerPartial := getNextPartOfMemSlice(memSlice, i)
 		fmt.Println()
 		fmt.Printf("%s Lpartial: %v", strconv.Itoa(i)+" ", largerPartial)
+
+		//First check for a do/dont and set mulInstructionsEnabled
+		if startsWithDoInstruction(largerPartial) {
+			mulInstructionsEnabled = true
+			fmt.Print(" do instruction ")
+		}
+
+		if startsWithDontInstruction(largerPartial) {
+			mulInstructionsEnabled = false
+			fmt.Print(" dont instruction ")
+		}
+
+		if !mulInstructionsEnabled {
+			fmt.Print(" skipped ")
+			continue
+		}
 
 		// Check start
 		if !arraysEqual(mulStart, partialMem) {
@@ -81,6 +99,16 @@ func findMuls(memSlice []string) [][]int {
 	return muls
 }
 
+func startsWithDoInstruction(largerPartial []string) bool {
+	doInstruction := []string{"d", "o", "(", ")"}
+	return arraysEqual(doInstruction, largerPartial[:4])
+}
+
+func startsWithDontInstruction(largerPartial []string) bool {
+	dontInstruction := []string{"d", "o", "n", "'", "t", "(", ")"}
+	return arraysEqual(dontInstruction, largerPartial[:7])
+}
+
 func getNumberFromStart(combinedIntsAndStrings []string) (int, int) {
 	var digits []string
 	for i := 0; i < len(combinedIntsAndStrings); i++ {
@@ -110,22 +138,21 @@ func getNumFromStringArray(strArr []string) int {
 	return num
 }
 
-func getNextPartOfMemSlice(memSlice []string, startIndex int) ([4]string, [12]string) {
-	var partialMem [4]string
-	copy(partialMem[:], memSlice[startIndex:startIndex+4])
-
-	var largerPartial [12]string
+func getNextPartOfMemSlice(memSlice []string, startIndex int) ([]string, []string) {
 	lengthLeft := len(memSlice) - startIndex
-	if lengthLeft > 12 {
-		copy(largerPartial[:], memSlice[startIndex:startIndex+12])
-	} else {
-		copy(largerPartial[:], memSlice[startIndex:startIndex+lengthLeft])
-	}
 
-	return partialMem, largerPartial
+	if lengthLeft > 12 {
+		return memSlice[startIndex : startIndex+4], memSlice[startIndex : startIndex+12]
+	} else {
+		return memSlice[startIndex : startIndex+4], memSlice[startIndex : startIndex+lengthLeft]
+	}
 }
 
-func arraysEqual(a1 [4]string, a2 [4]string) bool {
+func arraysEqual(a1 []string, a2 []string) bool {
+	if len(a1) != len(a2) {
+		return false
+	}
+
 	for i := range a1 {
 		if a1[i] != a2[i] {
 			return false
