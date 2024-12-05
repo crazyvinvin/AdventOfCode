@@ -2,16 +2,14 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
+
+	"github.com/crazyvinvin/advent-of-code/2024/shared"
 )
 
 func main() {
-	input, err := readInput()
-	if err != nil {
-		panic(err)
-	}
+	input := shared.ReadInput("../day2")
 
 	reports := createReportsFromInput(input)
 
@@ -141,16 +139,4 @@ func createReportsFromInput(input string) [][]int {
 	}
 
 	return reports
-}
-
-func readInput() (string, error) {
-	data, err := os.ReadFile("input.txt")
-
-	if err != nil {
-		return "", fmt.Errorf("File reading error: %w", err)
-	}
-
-	content := string(data)
-
-	return content, nil
 }

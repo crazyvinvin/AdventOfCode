@@ -6,13 +6,12 @@ import (
 	"strconv"
 	"strings"
 	"unicode"
+
+	"github.com/crazyvinvin/advent-of-code/2024/shared"
 )
 
 func main() {
-	input, err := readInput()
-	if err != nil {
-		panic(err)
-	}
+	input := shared.ReadInput("../day3")
 
 	memSlice := strings.Split(input, "")
 
