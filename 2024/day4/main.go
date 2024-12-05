@@ -19,6 +19,7 @@ func main() {
 	options = append(options, getDiagonalOptions(lines)...)
 	options = append(options, getRevertedSlices(options)...)
 
+	fmt.Println("Total Options: ", len(options))
 	fmt.Println("Total XMAS: ", countXMAS(options))
 }
 
@@ -42,8 +43,7 @@ func getRevertedSlices(_slices [][]string) [][]string {
 		slices.Reverse(result[i])
 	}
 
-	fmt.Println()
-	fmt.Print("Reverted options: ", len(result))
+	fmt.Println("Reverted options: ", len(result))
 	return result
 }
 
@@ -59,8 +59,7 @@ func getHorizontalOptions(lines [][]string) [][]string {
 			})
 		}
 	}
-	fmt.Println()
-	fmt.Print("Found horizontal options: ", len(options))
+	fmt.Println("Found horizontal options: ", len(options))
 	return options
 }
 
@@ -76,8 +75,7 @@ func getVerticalOptions(lines [][]string) [][]string {
 			})
 		}
 	}
-	fmt.Println()
-	fmt.Print("Found vertical options: ", len(options))
+	fmt.Println("Found vertical options: ", len(options))
 	return options
 }
 
@@ -105,8 +103,7 @@ func getDiagonalOptions(lines [][]string) [][]string {
 		}
 	}
 
-	fmt.Println()
-	fmt.Print("Found diagonal options: ", len(options))
+	fmt.Println("Found diagonal options: ", len(options))
 	return options
 }
 
