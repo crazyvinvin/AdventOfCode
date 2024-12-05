@@ -4,14 +4,26 @@ import (
 	"fmt"
 	"slices"
 	"strings"
+	"time"
 
 	"github.com/crazyvinvin/advent-of-code/2024/shared"
 )
 
 func main() {
+	startTime := time.Now()
 	input := shared.ReadInput("../day4")
 
+	elapsed := time.Since(startTime)
+	fmt.Printf("Reading input took: %s\n", elapsed)
+
+	startTimeTranslateInput := time.Now()
+
 	lines := createLinesFromInput(input)
+
+	elapsed = time.Since(startTimeTranslateInput)
+	fmt.Printf("createLinesFromInput took: %s\n", elapsed)
+
+	solutionStartTime := time.Now()
 
 	var options [][]string
 	options = append(options, getHorizontalOptions(lines)...)
@@ -21,6 +33,12 @@ func main() {
 
 	fmt.Println("Total Options: ", len(options))
 	fmt.Println("Total XMAS: ", countXMAS(options))
+
+	elapsed = time.Since(solutionStartTime)
+	fmt.Printf("Solution took: %s\n", elapsed)
+
+	elapsed = time.Since(startTime)
+	fmt.Printf("Total script took: %s\n", elapsed)
 }
 
 func countXMAS(stringSlices [][]string) int {
