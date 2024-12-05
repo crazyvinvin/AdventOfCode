@@ -12,26 +12,53 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
 	reports := createReportsFromInput(input)
 
+	fmt.Println("Safe reports: ", countSafeReports(reports))
+}
+
+func countSafeReports(reports [][]int) int {
 	safeReports := 0
 
 	for _, report := range reports {
-		if countUnsafeSituationsInReport(report) == 0 {
+		if isSafeSituation(report) {
 			safeReports++
-			fmt.Print("safe   ")
+			printReport(report, "safe   ")
+		} else if isDampenedSafe(report) {
+			safeReports++
+			printReport(report, "sa damp") //safe dampened
 		} else {
-			fmt.Print("unsafe ")
+			printReport(report, "unsafe ")
 		}
-		fmt.Printf("report: %v", report)
-		fmt.Println()
 	}
 
-	fmt.Println("Safe reports: ", safeReports)
+	return safeReports
 }
 
-func countUnsafeSituationsInReport(report []int) int {
-	unsafeSituations := 0
+func isDampenedSafe(report []int) bool {
+	dampenerSuggestions := getDampenerSuggestions(report)
+	for i := 0; i < len(dampenerSuggestions); i++ {
+		isDampenedSafe := isSafeSituation(dampenerSuggestions[i])
+		if isDampenedSafe {
+
+			return true
+		}
+	}
+	return false
+}
+
+func getDampenerSuggestions(report []int) [][]int {
+	var dampenerSuggestions [][]int
+
+	for i := 0; i < len(report); i++ {
+		dampenerSuggestions = append(dampenerSuggestions, removeIndex(report, i))
+	}
+
+	return dampenerSuggestions
+}
+
+func isSafeSituation(report []int) bool {
 	var lastLevel int
 	var lastDifWasPositive bool
 	var isLastDifInitialized bool
@@ -45,9 +72,7 @@ func countUnsafeSituationsInReport(report []int) int {
 		// Increase/Decrease fault checking
 		dif := level - lastLevel
 		if dif == 0 {
-			unsafeSituations++
-			lastLevel = level
-			continue
+			return false
 		}
 
 		if !isLastDifInitialized {
@@ -58,31 +83,30 @@ func countUnsafeSituationsInReport(report []int) int {
 			// Check dif is within bounds (1-3)
 			absDif := absolute(dif)
 			if absDif < 1 || absDif > 3 {
-				unsafeSituations++
+				return false
 			}
-
-			lastLevel = level
-			continue
 		}
 
 		if (dif < 0 && lastDifWasPositive) || (dif > 0 && !lastDifWasPositive) {
 			// opposite increase/decrease from last
-			unsafeSituations++
-			lastLevel = level
-			continue
+			return false
 		}
 
 		// Check dif is within bounds (1-3)
 		absDif := absolute(dif)
 		if absDif < 1 || absDif > 3 {
-			unsafeSituations++
-			lastLevel = level
-			continue
+			return false
 		}
 
 		lastLevel = level
 	}
-	return unsafeSituations
+	return true
+}
+
+func printReport(report []int, state string) {
+	fmt.Print(state + " ")
+	fmt.Printf("report: %v", report)
+	fmt.Println()
 }
 
 func absolute(x int) int {
@@ -90,6 +114,12 @@ func absolute(x int) int {
 		return -x
 	}
 	return x
+}
+
+func removeIndex(slice []int, index int) []int {
+	ret := make([]int, 0)
+	ret = append(ret, slice[:index]...)
+	return append(ret, slice[index+1:]...)
 }
 
 func createReportsFromInput(input string) [][]int {
